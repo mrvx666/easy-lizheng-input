@@ -1,0 +1,26 @@
+# -*- coding: utf-8 -*-
+
+"""
+这是ESI的主窗体，主要的业务都在这里完成。
+"""
+from PyQt5.QtWidgets import QMainWindow
+import xlrd
+
+class MainWindow(QMainWindow, Ui_MainWindow):
+
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent=parent)
+
+    def read_rawdata(file):
+        workbook = xlrd.open_workbook(file)
+        sheet_ZK = workbook.sheet_by_name('勘探点表')
+        sheet_TC = workbook.sheet_by_name('基本数据')
+        sheet_BG = workbook.sheet_by_name('标贯')
+        sheet_DT = workbook.sheet_by_name('动探')
+        sheet_SW = workbook.sheet_by_name('水位')
+        return (sheet_ZK,
+                sheet_TC,
+                sheet_BG,
+                sheet_DT,
+                sheet_SW)
+
