@@ -2,7 +2,6 @@
 import xlrd
 
 def read_rawdata(file):
-    print('open excel success!')
     workbook = xlrd.open_workbook(file)
     sheet_ZK = workbook.sheet_by_name('勘探点表')
     sheet_TC = workbook.sheet_by_name('基本数据')
@@ -15,21 +14,8 @@ def read_rawdata(file):
             sheet_DT,
             sheet_SW)
 
-ZK = read_rawdata("理正勘察标准数据接口模板.xlsx")[0]
-print(ZK.name,ZK.nrows,ZK.ncols)
 
-
-output_arr = []
-itercars = iter(range(ZK.nrows))
-next(itercars)  # 跳过第一行
-for row in itercars:
-    rowdata = ZK.row_values(row)
-    output = "#ZK#"
-    for data in rowdata[1:]:
-        if data is not "":
-            output = output + str(data) + "\t"
-    output_arr.append(output)
-
-print(output_arr)
-print(output_arr[0])
-
+def read_standard_formation(file):
+    workbook = xlrd.open_workbook(file)
+    sheet_BZDC = workbook.sheet_names('标准地层')
+    return sheet_BZDC

@@ -3,24 +3,59 @@
 """
 这是ESI的主窗体，主要的业务都在这里完成。
 """
-from PyQt5.QtWidgets import QMainWindow
-import xlrd
 
-class MainWindow(QMainWindow, Ui_MainWindow):
+from ZK import zk_read
+from TC import tc_read
+from excel import read_rawdata
+import point
+import codecs
 
-    def __init__(self, parent=None):
-        super(MainWindow, self).__init__(parent=parent)
 
-    def read_rawdata(file):
-        workbook = xlrd.open_workbook(file)
-        sheet_ZK = workbook.sheet_by_name('勘探点表')
-        sheet_TC = workbook.sheet_by_name('基本数据')
-        sheet_BG = workbook.sheet_by_name('标贯')
-        sheet_DT = workbook.sheet_by_name('动探')
-        sheet_SW = workbook.sheet_by_name('水位')
-        return (sheet_ZK,
-                sheet_TC,
-                sheet_BG,
-                sheet_DT,
-                sheet_SW)
+def data_output(header,dict,endkey,line_feed=True):
+    output = header
+    for key in dict:
+        if str(dict[key]).strip() == "":
+            pass
+        else:
+            output = output + str(dict[key])
+        if key == endkey:
+            pass
+        else:
+            output = output + "\t"
+    if line_feed == True:
+        output = output + "\r\n"
+    return output
 
+
+def write_txt(ZK_datalist,TC_datalist):
+    file = codecs.open("1.txt", "w", "gbk")
+    for ZK_data in ZK_datalist:
+
+        # ZK表写入开始
+        ZK_output = data_output("#ZK#",ZK_data,"勘探结束日期",False)
+        file.write(ZK_output + "\r\n")
+        # ZK表写入结束
+        # TC表写入开始
+        TC_output = ""
+        for tc_temp in TC_datalist:
+            if tc_temp['钻孔编号'] == ZK_data['钻孔编号']:  # 查找钻孔编号符合的数据
+                for tc_temp_dict in tc_temp['分层数据']:  # 提取分层数据
+                    if str(tc_temp_dict['层底深度']).strip() == "":  # 测试层底深度是否为0，防止数据错误
+                        pass
+                    else:
+                        TC_output = TC_output + data_output("#TC#", tc_temp_dict, "节理间距", True)
+                file.write(TC_output)
+        # TC表写入结束
+        # BG表写入开始
+
+        # BG表写入结束
+
+
+
+    file.close()
+
+
+ZK, TC, BG, DT, SW = read_rawdata("理正勘察标准数据接口模板.xlsx")
+zk_data = zk_read(ZK)
+tc_data = tc_read(TC)
+write_txt(zk_data,tc_data)
