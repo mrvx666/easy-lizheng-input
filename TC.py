@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-import copy
 from config import get_TC_dict, get_TC_header
 
 
@@ -13,7 +12,7 @@ def tc_read(sheet):
         temparr = []
 
         for row in range(sheet.nrows)[TC_header_row:]:  # 跳过钻孔编号
-            tempdict = copy.deepcopy(TC_dict)  # 拷贝原始字典
+            tempdict = TC_dict.copy()  # 拷贝原始字典
             for colX in range(TC_header_col):  # 用于确定表头
                 if colX >= TC_header_col-1:
                     key = "层底深度"
