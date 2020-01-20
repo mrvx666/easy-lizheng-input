@@ -11,6 +11,7 @@ from DT import dt_read
 from SW import sw_read
 from excel import read_rawdata
 import codecs
+import datetime
 
 
 def data_output(header, dict, endkey, line_feed=True):
@@ -31,7 +32,9 @@ def data_output(header, dict, endkey, line_feed=True):
 
 def write_txt(ZK_datalist,TC_datalist,BG_datalist,DT_datalist,SW_datalist):
     count = 1
-    file = codecs.open("1.txt", "w", "gbk")
+    time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    output_file_name = "理正勘察标准数据接口导出" + str(time) + ".txt"
+    file = codecs.open(output_file_name, "w", "gbk")
     for ZK_data in ZK_datalist:
 
         # ZK表写入开始

@@ -12,3 +12,4 @@ gen
 venv/
 ~$理正勘察标准数据接口模板.xlsx
 __pycache__/
+*.pyc
