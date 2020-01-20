@@ -7,6 +7,8 @@ TC = "岩土名称、层底深度、地层厚度、主层编号、亚层编号�
 TC_header = (1, 4)
 BG = "试验点的底深度(m)、标贯类型、特征值、杆长(m)、一阵击数的长度(m)、一阵击数、标贯击数、标贯修正系数（中间结果）、修正后的标贯击数、修正否、参与否"
 BG_header = (1, 1)
+DT = "试验点的底深度(m)、动探类型(1-轻型/2-重型/3-超重型)、杆长(m)、试验段长度(m)、一阵击数、贯入度、动探击数、修正后击数、修正否、参与否"
+DT_header = (1, 1)
 SW = "水位深度(m)、地下水类型(0-初见水位 1-稳定水位)、地下水位层号、测水日期、地下水温、水位范围、地下水性质(1-上层滞水/2-潜水/3-承压水/4-其它)、参与否"
 SW_header = (1, 1)
 
@@ -44,6 +46,15 @@ def get_BG_dict():
 
 def get_BG_header():
     return BG_header
+
+
+def get_DT_dict():
+    DT_dict = to_dict(DT)
+    return DT_dict
+
+
+def get_DT_header():
+    return DT_header
 
 
 def get_SW_dict():

@@ -15,7 +15,6 @@ def sw_read(sheet):
         for col in range(sheet.ncols)[SW_header_col:]:
             key = sheet.cell_value(rowx=0, colx=col)
             temp[key] = sheet.cell_value(rowx=row, colx=col)
-            print(str(key) + "  "+str(temp[key]))
         zk_name = sheet.cell_value(rowx=row, colx=0)
         outputdict = {"钻孔编号": zk_name,
                       "水位数据": temp}
@@ -25,6 +24,4 @@ def sw_read(sheet):
 
 ZK,TC,BG,DT,SW = read_rawdata("理正勘察标准数据接口模板.xlsx")
 sw_data = sw_read(SW)
-for data in sw_data:
-    print(data)
 
