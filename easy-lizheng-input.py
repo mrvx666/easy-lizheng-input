@@ -15,7 +15,7 @@ import codecs
 import datetime
 
 
-def data_temp_output(file,zk_name, datalist, endkey):
+def data_temp_output(file, zk_name, datalist, endkey):
     header = ""
     datalisttype = list(datalist[0].keys())[1]  # 根据传入的数据字典列表获取数据类型
     if datalisttype == "标贯数据":
@@ -73,7 +73,7 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
                         pass
                     else:
                         tc_output = tc_output + data_output("#TC#", tc_temp_dict, "节理间距")
-            file.write(tc_output)
+        file.write(tc_output)
         # TC表写入结束
         # BG表写入开始
         data_temp_output(file, zk_name, bg_datalist, "参与否")
