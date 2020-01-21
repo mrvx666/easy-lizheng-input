@@ -9,6 +9,7 @@ from TC import tc_read
 from BG import bg_read
 from DT import dt_read
 from SW import sw_read
+from QY import qy_read
 from excel import read_rawdata
 import codecs
 import datetime
@@ -48,7 +49,7 @@ def data_output(header, dict, endkey, line_feed=True):
     return output
 
 
-def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist):
+def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, qy_datalist):
 
     time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     output_file_name = "理正勘察标准数据接口导出" + str(time) + ".txt"
@@ -76,30 +77,23 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist):
         data_temp_output(file, zk_name, bg_datalist, "参与否")
         # BG表写入结束
         # DT表写入开始
-        file.write(";钻孔编号-" + ZK_data['钻孔编号'] + " 动探数据" + "\r\n")
-        DT_output = ""
-        for dt_temp in dt_datalist:
-            if dt_temp['钻孔编号'] == ZK_data['钻孔编号']:  # 查找钻孔编号符合的数据
-                DT_output = DT_output + data_output("#DT#", dt_temp['动探数据'], "参与否", True)
-        file.write(DT_output)
+        data_temp_output(file, zk_name, dt_datalist, "参与否")
         # DT表写入结束
         # SW表写入开始
         data_temp_output(file, zk_name, sw_datalist, "参与否")
         # SW表写入结束
-<<<<<<< HEAD
         # QY表写入开始
-        data_temp_output(file, zk_name, dt_datalist, "回弹模量")
+        data_temp_output(file, zk_name, qy_datalist, "回弹模量")
         # QY表写入结束
-=======
->>>>>>> parent of 35eba40... 增加取样
 
     file.close()
 
 
-ZK, TC, BG, DT, SW = read_rawdata("理正勘察标准数据接口模板.xlsx")
+ZK, TC, BG, DT, SW, QY = read_rawdata("理正勘察标准数据接口模板.xlsx")
 zk_data = zk_read(ZK)
 tc_data = tc_read(TC)
 bg_data = bg_read(BG)
 dt_data = dt_read(DT)
 sw_data = sw_read(SW)
-write_txt(zk_data, tc_data, bg_data, dt_data, sw_data)
+qy_data = qy_read(QY)
+write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, qy_data)
