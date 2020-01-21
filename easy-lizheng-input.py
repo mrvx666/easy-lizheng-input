@@ -9,7 +9,6 @@ from TC import tc_read
 from BG import bg_read
 from DT import dt_read
 from SW import sw_read
-from QY import qy_read
 from excel import read_rawdata
 import codecs
 import datetime
@@ -49,7 +48,7 @@ def data_output(header, dict, endkey, line_feed=True):
     return output
 
 
-def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, qy_datalist):
+def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist):
 
     time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     output_file_name = "理正勘察标准数据接口导出" + str(time) + ".txt"
@@ -87,18 +86,20 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
         # SW表写入开始
         data_temp_output(file, zk_name, sw_datalist, "参与否")
         # SW表写入结束
+<<<<<<< HEAD
         # QY表写入开始
         data_temp_output(file, zk_name, dt_datalist, "回弹模量")
         # QY表写入结束
+=======
+>>>>>>> parent of 35eba40... 增加取样
 
     file.close()
 
 
-ZK, TC, BG, DT, SW, QY = read_rawdata("理正勘察标准数据接口模板.xlsx")
+ZK, TC, BG, DT, SW = read_rawdata("理正勘察标准数据接口模板.xlsx")
 zk_data = zk_read(ZK)
 tc_data = tc_read(TC)
 bg_data = bg_read(BG)
 dt_data = dt_read(DT)
 sw_data = sw_read(SW)
-qy_data = qy_read(QY)
-write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, qy_data)
+write_txt(zk_data, tc_data, bg_data, dt_data, sw_data)
