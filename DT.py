@@ -18,7 +18,7 @@ def dt_read(sheet):
             else:
                 pass
             outputdict = {"钻孔编号": zk_name,
-                          "标贯数据": temp}
+                          "动探数据": temp}
 
         outputarr.append(outputdict)
 

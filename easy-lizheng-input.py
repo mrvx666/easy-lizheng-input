@@ -14,6 +14,24 @@ from excel import read_rawdata
 import codecs
 import datetime
 
+def data_temp_output(file,zk_name,datalist,endkey):
+    header = ""
+    datalisttype = list(datalist[0].keys())[1]
+    if datalisttype == "标贯数据":
+        header = "#BG#"
+    if datalisttype == "动探数据":
+        header = "#DT#"
+    if datalisttype == "水位数据":
+        header = "#SW#"
+    if datalisttype == "取样数据":
+        header = "#QY#"
+
+    file.write(";钻孔编号-" + zk_name + " " + datalisttype + "\r\n")
+    output = ""
+    for temp in datalist:
+        if temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
+            output = output + data_output(header, temp[datalisttype], endkey, True)
+    file.write(output)
 
 def data_output(header, dict, endkey, line_feed=True):
     output = header
@@ -37,17 +55,17 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
     output_file_name = "理正勘察标准数据接口导出" + str(time) + ".txt"
     file = codecs.open(output_file_name, "w", "gbk")
     for ZK_data in zk_datalist:
-
+        zk_name = ZK_data['钻孔编号']  # 获取钻孔编号
         # ZK表写入开始
-        file.write(";钻孔编号-" + ZK_data['钻孔编号'] + " 钻孔数据" + "\r\n")
+        file.write(";钻孔编号-" + zk_name + " 钻孔数据" + "\r\n")
         zk_output = data_output("#ZK#", ZK_data, "勘探结束日期", False)
         file.write(zk_output + "\r\n")
         # ZK表写入结束
         # TC表写入开始
-        file.write(";钻孔编号-" + ZK_data['钻孔编号'] + " 土层数据" + "\r\n")
+        file.write(";钻孔编号-" + zk_name + " 土层数据" + "\r\n")
         tc_output = ""
         for tc_temp in tc_datalist:
-            if tc_temp['钻孔编号'] == ZK_data['钻孔编号']:  # 查找钻孔编号符合的数据
+            if tc_temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
                 for tc_temp_dict in tc_temp['分层数据']:  # 提取分层数据
                     if str(tc_temp_dict['层底深度']).strip() == "":  # 测试层底深度是否为空，防止数据错误
                         pass
@@ -56,36 +74,21 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
                 file.write(tc_output)
         # TC表写入结束
         # BG表写入开始
-        file.write(";钻孔编号-" + ZK_data['钻孔编号'] + " 标贯数据" + "\r\n")
-        bg_output = ""
-        for bg_temp in bg_datalist:
-            if bg_temp['钻孔编号'] == ZK_data['钻孔编号']:  # 查找钻孔编号符合的数据
-                bg_output = bg_output + data_output("#BG#", bg_temp['标贯数据'], "参与否", True)
-        file.write(bg_output)
+        data_temp_output(file, zk_name, bg_datalist, "参与否")
         # BG表写入结束
         # DT表写入开始
         file.write(";钻孔编号-" + ZK_data['钻孔编号'] + " 动探数据" + "\r\n")
         DT_output = ""
         for dt_temp in dt_datalist:
             if dt_temp['钻孔编号'] == ZK_data['钻孔编号']:  # 查找钻孔编号符合的数据
-                DT_output = DT_output + data_output("#DT#", dt_temp['标贯数据'], "参与否", True)
+                DT_output = DT_output + data_output("#DT#", dt_temp['动探数据'], "参与否", True)
         file.write(DT_output)
         # DT表写入结束
         # SW表写入开始
-        file.write(";钻孔编号-" + ZK_data['钻孔编号'] + " 水位数据" + "\r\n")
-        sw_output = ""
-        for bg_temp in sw_datalist:
-            if bg_temp['钻孔编号'] == ZK_data['钻孔编号']:  # 查找钻孔编号符合的数据
-                sw_output = sw_output + data_output("#SW#", bg_temp['水位数据'], "参与否", True)
-        file.write(sw_output)
+        data_temp_output(file, zk_name, sw_datalist, "参与否")
         # SW表写入结束
         # QY表写入开始
-        file.write(";钻孔编号-" + ZK_data['钻孔编号'] + " 取样数据" + "\r\n")
-        qy_output = ""
-        for qy_temp in qy_datalist:
-            if qy_temp['钻孔编号'] == ZK_data['钻孔编号']:  # 查找钻孔编号符合的数据
-                qy_output = qy_output + data_output("#QY#", qy_temp['取样数据'], "回弹模量", True)
-        file.write(qy_output)
+        data_temp_output(file, zk_name, dt_datalist, "回弹模量")
         # QY表写入结束
 
     file.close()
