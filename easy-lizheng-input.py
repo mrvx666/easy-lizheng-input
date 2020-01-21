@@ -14,9 +14,9 @@ from excel import read_rawdata
 import codecs
 import datetime
 
-def data_temp_output(file,zk_name,datalist,endkey):
+def data_temp_output(file,zk_name, datalist, endkey):
     header = ""
-    datalisttype = list(datalist[0].keys())[1]
+    datalisttype = list(datalist[0].keys())[1]  # 根据传入的数据字典列表获取数据类型
     if datalisttype == "标贯数据":
         header = "#BG#"
     if datalisttype == "动探数据":
@@ -30,8 +30,9 @@ def data_temp_output(file,zk_name,datalist,endkey):
     output = ""
     for temp in datalist:
         if temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
-            output = output + data_output(header, temp[datalisttype], endkey, True)
+            output = output + data_output(header, temp[datalisttype], endkey)
     file.write(output)
+
 
 def data_output(header, dict, endkey, line_feed=True):
     output = header
@@ -70,8 +71,8 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
                     if str(tc_temp_dict['层底深度']).strip() == "":  # 测试层底深度是否为空，防止数据错误
                         pass
                     else:
-                        tc_output = tc_output + data_output("#TC#", tc_temp_dict, "节理间距", True)
-                file.write(tc_output)
+                        tc_output = tc_output + data_output("#TC#", tc_temp_dict, "节理间距")
+            file.write(tc_output)
         # TC表写入结束
         # BG表写入开始
         data_temp_output(file, zk_name, bg_datalist, "参与否")
@@ -97,3 +98,4 @@ dt_data = dt_read(DT)
 sw_data = sw_read(SW)
 qy_data = qy_read(QY)
 write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, qy_data)
+
