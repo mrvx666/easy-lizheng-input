@@ -22,6 +22,6 @@ def sw_read(sheet):
     return outputarr
 
 
-ZK,TC,BG,DT,SW = read_rawdata("理正勘察标准数据接口模板.xlsx")
+ZK,TC,BG,DT,SW, QY = read_rawdata("理正勘察标准数据接口模板.xlsx")
 sw_data = sw_read(SW)
 

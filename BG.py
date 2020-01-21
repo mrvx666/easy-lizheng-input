@@ -1,7 +1,5 @@
 # -*- coding: UTF-8 -*-
 from config import get_BG_dict, get_BG_header
-from excel import read_rawdata
-
 
 BG_dict = get_BG_dict()
 BG_header_row, BG_header_col = get_BG_header()
