@@ -8,13 +8,11 @@ def read_rawdata(file):
     sheet_BG = workbook.sheet_by_name('标贯')
     sheet_DT = workbook.sheet_by_name('动探')
     sheet_SW = workbook.sheet_by_name('水位')
-    sheet_QY = workbook.sheet_by_name('取样')
     return (sheet_ZK,
             sheet_TC,
             sheet_BG,
             sheet_DT,
-            sheet_SW,
-            sheet_QY)
+            sheet_SW)
 
 
 def read_standard_formation(file):
