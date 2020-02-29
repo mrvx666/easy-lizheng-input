@@ -16,23 +16,26 @@ import datetime
 
 
 def data_temp_output(file, zk_name, datalist, endkey):
-    header = ""
-    datalisttype = list(datalist[0].keys())[1]  # 根据传入的数据字典列表获取数据类型
-    if datalisttype == "标贯数据":
-        header = "#BG#"
-    if datalisttype == "动探数据":
-        header = "#DT#"
-    if datalisttype == "水位数据":
-        header = "#SW#"
-    if datalisttype == "取样数据":
-        header = "#QY#"
+    if len(datalist) == 0:  # 如果某一个点没有标贯\动探\水位……数据块，跳过
+        pass
+    else:
+        header = ""
+        datalisttype = list(datalist[0].keys())[1]  # 根据传入的数据字典列表获取数据类型
+        if datalisttype == "标贯数据":
+            header = "#BG#"
+        if datalisttype == "动探数据":
+            header = "#DT#"
+        if datalisttype == "水位数据":
+            header = "#SW#"
+        if datalisttype == "取样数据":
+            header = "#QY#"
 
-    file.write(";钻孔编号-" + zk_name + " " + datalisttype + "\r\n")
-    output = ""
-    for temp in datalist:
-        if temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
-            output = output + data_output(header, temp[datalisttype], endkey)
-    file.write(output)
+        file.write(";钻孔编号-" + zk_name + " " + datalisttype + "\r\n")
+        output = ""
+        for temp in datalist:
+            if temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
+                output = output + data_output(header, temp[datalisttype], endkey)
+        file.write(output)
 
 
 def data_output(header, dict, endkey, line_feed=True):
@@ -42,10 +45,12 @@ def data_output(header, dict, endkey, line_feed=True):
             pass
         else:
             output = output + str(dict[key])
+
         if key == endkey:
             pass
         else:
             output = output + "\t"
+
     if line_feed == True:
         output = output + "\r\n"
     return output
