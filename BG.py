@@ -17,6 +17,7 @@ def bg_read(sheet):
                 zk_name = sheet.cell_value(rowx=row, colx=0)
             else:
                 pass
+            temp.update({'参与否': 1})
             outputdict = {"钻孔编号": zk_name,
                           "标贯数据": temp}
 
