@@ -14,15 +14,13 @@ def qy_read(sheet):
         for col in range(sheet.ncols)[QY_header_col:]:
             if str(sheet.cell_value(rowx=row, colx=0)).strip() != "":  # 检测第一列数据作为钻孔编号
                 zk_name = str(sheet.cell_value(rowx=row, colx=0))
-                zk_name_headnumber = re.findall(r"\d+\.?\d*", zk_name)[0]
                 count = 1  # 用于取样编号
 
             key = sheet.cell_value(rowx=0, colx=col)
             temp[key] = sheet.cell_value(rowx=row, colx=col)
             outputdict = {"钻孔编号": zk_name,
                           "取样数据": temp}
-        qy_number = zk_name_headnumber + "-" + str(count)
-        temp.update({'取样编号': qy_number})
+        temp.update({'取样编号': count})
         count += 1
         outputarr.append(outputdict)
 
