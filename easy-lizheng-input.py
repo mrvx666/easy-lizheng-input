@@ -57,52 +57,84 @@ def data_output(header, dict, endkey, line_feed=True):
     return output
 
 
-def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, qy_datalist):
+def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, qy_datalist, filename):
 
     time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-    output_file_name = "理正勘察标准数据接口导出" + str(time) + ".txt"
-    file = codecs.open(str(output_file_name), "w", "gbk")
+    output_file_name = filename + "接口导出" + str(time) + ".txt"
+
+    try:
+        file = codecs.open(str(output_file_name), "w", "gbk")
+    except Exception as e:
+        print("文件打开失败\n" + str(e))
+
     for ZK_data in zk_datalist:
         zk_name = ZK_data['钻孔编号']  # 获取钻孔编号
-        # ZK表写入开始
-        file.write(";钻孔编号-" + zk_name + " 钻孔数据" + "\r\n")
-        zk_output = data_output("#ZK#", ZK_data, get_last_key(ZK_list), False)
-        file.write(zk_output + "\r\n")
-        # ZK表写入结束
-        # TC表写入开始
-        file.write(";钻孔编号-" + zk_name + " 地层数据" + "\r\n")
-        tc_output = ""
-        for tc_temp in tc_datalist:
-            if tc_temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
-                for tc_temp_dict in tc_temp['分层数据']:  # 提取分层数据
-                    if str(tc_temp_dict['层底深度']).strip() == "":  # 测试层底深度是否为空，防止数据错误
-                        pass
-                    else:
-                        tc_output = tc_output + data_output("#TC#", tc_temp_dict, get_last_key(TC_list))
-        file.write(tc_output)
-        # TC表写入结束
-        # BG表写入开始
-        data_temp_output(file, zk_name, bg_datalist, get_last_key(BG_list))
-        # BG表写入结束
-        # DT表写入开始
-        data_temp_output(file, zk_name, dt_datalist, get_last_key(DT_list))
-        # DT表写入结束
-        # SW表写入开始
-        data_temp_output(file, zk_name, sw_datalist, get_last_key(SW_list))
-        # SW表写入结束
-        # QY表写入开始
-        data_temp_output(file, zk_name, qy_datalist, get_last_key(QY_list))
-        # QY表写入结束
+
+        try:
+            # ---勘探点表写入---
+            file.write(";钻孔编号-" + zk_name + " 钻孔数据" + "\r\n")
+            zk_output = data_output("#ZK#", ZK_data, get_last_key(ZK_list), False)
+            file.write(zk_output + "\r\n")
+        except Exception as e:
+            print("勘探点表写入失败\n" + str(e))
+
+        try:
+            # ---土层数据表写入---
+            file.write(";钻孔编号-" + zk_name + " 地层数据" + "\r\n")
+            tc_output = ""
+            for tc_temp in tc_datalist:
+                if tc_temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
+                    for tc_temp_dict in tc_temp['分层数据']:  # 提取分层数据
+                        if str(tc_temp_dict['层底深度']).strip() == "":  # 测试层底深度是否为空，防止数据错误
+                            pass
+                        else:
+                            tc_output = tc_output + data_output("#TC#", tc_temp_dict, get_last_key(TC_list))
+            file.write(tc_output)
+        except Exception as e:
+            print("土层数据表写入失败\n" + str(e))
+
+        try:
+            # ---标贯数据表写入---
+            data_temp_output(file, zk_name, bg_datalist, get_last_key(BG_list))
+        except Exception as e:
+            print("标贯数据表写入失败\n" + str(e))
+
+        try:
+            # ---动探数据表写入---
+            data_temp_output(file, zk_name, dt_datalist, get_last_key(DT_list))
+        except Exception as e:
+            print("动探数据表写入失败\n" + str(e))
+
+        try:
+            # ---水位数据表写入---
+            data_temp_output(file, zk_name, sw_datalist, get_last_key(SW_list))
+        except Exception as e:
+            print("水位数据表写入失败\n" + str(e))
+        try:
+            # --取样数据表写入---
+            data_temp_output(file, zk_name, qy_datalist, get_last_key(QY_list))
+        except Exception as e:
+            print("取样数据表写入失败\n" + str(e))
 
     file.close()
+    return output_file_name
 
 
-ZK, TC, BG, DT, SW, QY = read_rawdata("理正勘察标准数据接口模板.xlsx")
-zk_data = zk_read(ZK)
-tc_data = tc_read(TC)
-bg_data = bg_read(BG)
-dt_data = dt_read(DT)
-sw_data = sw_read(SW)
-qy_data = qy_read(QY)
-write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, qy_data)
+filename = input("要转换的文件默认为“理正勘察标准数据接口模板”，按下回车继续\n"+"如果要转换别的文件，请输入要转换的文件名（忽略.xlsx拓展名）\n")
+if filename == "":
+    filename = "理正勘察标准数据接口模板"
+filename += ".xlsx"
 
+try:
+    ZK, TC, BG, DT, SW, QY = read_rawdata(filename)
+    zk_data = zk_read(ZK)
+    tc_data = tc_read(TC)
+    bg_data = bg_read(BG)
+    dt_data = dt_read(DT)
+    sw_data = sw_read(SW)
+    qy_data = qy_read(QY)
+    output_file_name = write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, qy_data, filename)
+    input("转换完成，文件名：" + output_file_name + "\n导入到理正前请务必备份原有的理正数据库" + "\n请按任意键退出.......")
+except Exception as e:
+    print("转换失败" + "\n请按任意键退出.......")
+    input()
