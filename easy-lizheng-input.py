@@ -11,6 +11,7 @@ from DT import dt_read
 from SW import sw_read
 from QY import qy_read
 from excel import read_rawdata
+from config import get_last_key, ZK_list, TC_list, BG_list, DT_list, SW_list, QY_list
 import codecs
 import datetime
 
@@ -60,16 +61,16 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
 
     time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     output_file_name = "理正勘察标准数据接口导出" + str(time) + ".txt"
-    file = codecs.open(output_file_name, "w", "gbk")
+    file = codecs.open(str(output_file_name), "w", "gbk")
     for ZK_data in zk_datalist:
         zk_name = ZK_data['钻孔编号']  # 获取钻孔编号
         # ZK表写入开始
         file.write(";钻孔编号-" + zk_name + " 钻孔数据" + "\r\n")
-        zk_output = data_output("#ZK#", ZK_data, "勘探结束日期", False)
+        zk_output = data_output("#ZK#", ZK_data, get_last_key(ZK_list), False)
         file.write(zk_output + "\r\n")
         # ZK表写入结束
         # TC表写入开始
-        file.write(";钻孔编号-" + zk_name + " 土层数据" + "\r\n")
+        file.write(";钻孔编号-" + zk_name + " 地层数据" + "\r\n")
         tc_output = ""
         for tc_temp in tc_datalist:
             if tc_temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
@@ -77,20 +78,20 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
                     if str(tc_temp_dict['层底深度']).strip() == "":  # 测试层底深度是否为空，防止数据错误
                         pass
                     else:
-                        tc_output = tc_output + data_output("#TC#", tc_temp_dict, "节理间距")
+                        tc_output = tc_output + data_output("#TC#", tc_temp_dict, get_last_key(TC_list))
         file.write(tc_output)
         # TC表写入结束
         # BG表写入开始
-        data_temp_output(file, zk_name, bg_datalist, "参与否")
+        data_temp_output(file, zk_name, bg_datalist, get_last_key(BG_list))
         # BG表写入结束
         # DT表写入开始
-        data_temp_output(file, zk_name, dt_datalist, "参与否")
+        data_temp_output(file, zk_name, dt_datalist, get_last_key(DT_list))
         # DT表写入结束
         # SW表写入开始
-        data_temp_output(file, zk_name, sw_datalist, "参与否")
+        data_temp_output(file, zk_name, sw_datalist, get_last_key(SW_list))
         # SW表写入结束
         # QY表写入开始
-        data_temp_output(file, zk_name, qy_datalist, "回弹模量")
+        data_temp_output(file, zk_name, qy_datalist, get_last_key(QY_list))
         # QY表写入结束
 
     file.close()
