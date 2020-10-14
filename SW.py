@@ -16,7 +16,6 @@ def sw_read(sheet):
             key = sheet.cell_value(rowx=0, colx=col)
             temp[key] = sheet.cell_value(rowx=row, colx=col)
         zk_name = sheet.cell_value(rowx=row, colx=0)
-        temp.update({'参与否': 1})
         outputdict = {"钻孔编号": zk_name,
                       "水位数据": temp}
         outputarr.append(outputdict)
