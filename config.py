@@ -50,12 +50,6 @@ def get_list(datastr):
     return templist
 
 
-def get_last_key(data):
-    datalist = get_list(data)
-    lastkey = datalist[-1]
-    return lastkey
-
-
 def to_dict(datalist):
     templist1 = get_list(datalist)
     templist2 = []
