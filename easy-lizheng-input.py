@@ -163,20 +163,20 @@ def main():
 
     print("\n")
     print("*************************************************************")
-    sleep(0.7)
-    print("Author: mrvx666")
     sleep(0.6)
-    print("Project website:https://github.com/mrvx666/easy-lizheng-input")
+    print("Author: mrvx666")
     sleep(0.5)
+    print("Project website:https://github.com/mrvx666/easy-lizheng-input")
+    sleep(0.4)
     print("*************************************************************")
     sleep(1)
     print("\n")
 
     print("转换完成，目录为：\n" + output_file_name + "\n")
     print("***警告：导入到理正勘察前请务必备份理正数据库***\n")
-    sleep(0.5)
+    sleep(0.3)
     print("导入方法：①理正勘察8.5选择 接口→读入理正标准数据接口\n         ②理正勘察9.0选择 接口→读入旧版理正标准数据接口\n")
-    sleep(0.5)
+    sleep(0.3)
     input("按任意键退出...")
 
 
