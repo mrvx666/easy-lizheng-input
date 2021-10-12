@@ -20,10 +20,20 @@ def tc_read(sheet):
                 else:
                     key = sheet.cell_value(rowx=0, colx=colX)
                     tempdict[key] = sheet.cell_value(rowx=row, colx=colX)
+
+            # 从excel出来的层号可能是float类型，进行转换到整数，如果没有层号就跳过不处理
+            try:
+                tempdict['主层编号'] = int(tempdict['主层编号'])
+                tempdict['亚层编号'] = int(tempdict['亚层编号'])
+                tempdict['亚层编号'] = int(tempdict['次亚层编号'])
+            except Exception as e:
+                # print("层号不存在\n" + str(e))
+                pass
+
             temparr.append(tempdict)
         zk_name = sheet.cell_value(rowx=0, colx=col)
         outputdict = {"钻孔编号": zk_name,
-                     "分层数据": temparr}
+                     "土层数据": temparr}
         outputarr.append(outputdict)
 
     return outputarr
