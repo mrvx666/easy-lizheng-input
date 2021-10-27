@@ -27,6 +27,8 @@ def get_last_key(data):
 
 
 def data_temp_output(zk_name, datalist, endkey):
+    output = ""
+
     if len(datalist) == 0:  # 如果某一个点没有标贯\动探\水位……数据块，跳过
         pass
     else:
@@ -42,13 +44,12 @@ def data_temp_output(zk_name, datalist, endkey):
         if datalisttype == "取样数据":
             header = "#QY#"
 
-        output = ""
         for temp in datalist:
             if temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
                 output = output + data_output(header, temp[datalisttype], endkey)
-                return output
+
     # 返回一个空字符串，防止产生None
-    return ""
+    return output
 
 
 def data_output(header, data_dict, endkey, line_feed=True):
@@ -148,7 +149,7 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
         return output_file_name
 
     except Exception as e:
-        print("文件打开失败\n" + str(e))
+        print("文件写入失败\n" + str(e))
         return -1
 
 
@@ -173,32 +174,36 @@ def get_filename():
 
 def main():
     filename = get_filename()
-    zk, tc, bg, dt, sw, qy = read_rawdata(filename)
-    zk_data = zk_read(zk)
-    tc_data = tc_read(tc)
-    bg_data = bg_read(bg)
-    dt_data = dt_read(dt)
-    sw_data = sw_read(sw)
-    qy_data = qy_read(qy)
-    output_file_name = write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, qy_data, filename)
+    try:
+        zk, tc, bg, dt, sw, qy = read_rawdata(filename)
+        zk_data = zk_read(zk)
+        tc_data = tc_read(tc)
+        bg_data = bg_read(bg)
+        dt_data = dt_read(dt)
+        sw_data = sw_read(sw)
+        qy_data = qy_read(qy)
+        output_file_name = write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, qy_data, filename)
+        return output_file_name
 
-    return output_file_name
-
+    except FileNotFoundError:
+        print(filename + "文件不存在，请检查文件是否存在当前目录下")
 
 if __name__ == '__main__':
     import traceback
+
+    print("\n")
+    print("*************************************************************")
+    sleep(0.6)
+    print("Author: mrvx666")
+    sleep(0.5)
+    print("Project website:https://github.com/mrvx666/easy-lizheng-input")
+    sleep(0.4)
+    print("*************************************************************")
+    sleep(1)
+    print("\n")
+
     try:
         output_file_name = main()
-        print("\n")
-        print("*************************************************************")
-        sleep(0.6)
-        print("Author: mrvx666")
-        sleep(0.5)
-        print("Project website:https://github.com/mrvx666/easy-lizheng-input")
-        sleep(0.4)
-        print("*************************************************************")
-        sleep(1)
-        print("\n")
 
         print("转换完成，转换文件名为：\n" + output_file_name + "\n")
 
@@ -209,6 +214,10 @@ if __name__ == '__main__':
         input("按任意键退出...")
 
     except Exception:
+        print("*************************************************************")
+        print("错误信息 debug：")
         traceback.print_exc()
+        print("*************************************************************")
+
         input("\n程序运行异常...按下任意键退出")
 

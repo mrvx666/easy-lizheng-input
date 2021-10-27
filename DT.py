@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
 from config import get_DT_dict, get_DT_header, DT_DTLX, DT_CYF
-from excel import read_rawdata
 
 
 DT_dict = get_DT_dict()
 DT_header_row, DT_header_col = get_DT_header()
+
 
 def dt_read(sheet):
     outputarr = []

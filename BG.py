@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 from config import get_BG_dict, get_BG_header, BG_TZZ, BG_YZJSCD, BG_CYF
-from excel import read_rawdata
 
 
 BG_dict = get_BG_dict()

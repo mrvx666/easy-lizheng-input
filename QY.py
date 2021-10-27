@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-import re
-from config import get_QY_dict, get_QY_header
+from config import get_QY_dict, get_QY_header, QY_QYCD
 
 
 QY_dict = get_QY_dict()
@@ -21,6 +20,7 @@ def qy_read(sheet):
             outputdict = {"钻孔编号": zk_name,
                           "取样数据": temp}
         temp.update({'取样编号': count})
+        temp.update({'取样长度': QY_QYCD})
         count += 1
         outputarr.append(outputdict)
 
