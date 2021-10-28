@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-from config import get_QY_dict, get_QY_header, QY_QYCD
+from utils.config import get_dict, get_header, QY_QYCD
 
 
-QY_dict = get_QY_dict()
-QY_header_row, QY_header_col = get_QY_header()
+QY_dict = get_dict("取样数据")
+QY_header_row, QY_header_col = get_header("取样数据")
 
 def qy_read(sheet):
     outputarr = []

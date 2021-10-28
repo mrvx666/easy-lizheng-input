@@ -49,13 +49,13 @@ QY_header = (1, 1)
 QY_QYCD = 0.2
 
 
-def get_list(datastr):
+def to_list(datastr):
     templist = re.split("、", datastr)
     return templist
 
 
 def to_dict(datalist):
-    templist1 = get_list(datalist)
+    templist1 = to_list(datalist)
     templist2 = []
     for i in range(len(templist1)):
         templist2.append("")
@@ -63,54 +63,50 @@ def to_dict(datalist):
     return data_dict
 
 
-def get_ZK_dict():
-    ZK_dict = to_dict(ZK_list)
-    return ZK_dict
+def get_header(datalisttype):
+    if datalisttype == "基本数据":
+        header = ZK_header
+    if datalisttype == "土层数据":
+        header = TC_header
+    if datalisttype == "标贯数据":
+        header = BG_header
+    if datalisttype == "动探数据":
+        header = DT_header
+    if datalisttype == "水位数据":
+        header = SW_header
+    if datalisttype == "取样数据":
+        header = QY_header
+    return header
 
 
-def get_ZK_header():
-    return ZK_header
+def get_dict(datalisttype):
+    if datalisttype == "基本数据":
+        out_dict = to_dict(ZK_list)
+    if datalisttype == "土层数据":
+        out_dict = to_dict(TC_list)
+    if datalisttype == "标贯数据":
+        out_dict = to_dict(BG_list)
+    if datalisttype == "动探数据":
+        out_dict = to_dict(DT_list)
+    if datalisttype == "水位数据":
+        out_dict = to_dict(SW_list)
+    if datalisttype == "取样数据":
+        out_dict = to_dict(QY_list)
+    return out_dict
 
 
-def get_TC_dict():
-    TC_dict = to_dict(TC_list)
-    return TC_dict
-
-
-def get_TC_header():
-    return TC_header
-
-
-def get_BG_dict():
-    BG_dict = to_dict(BG_list)
-    return BG_dict
-
-
-def get_BG_header():
-    return BG_header
-
-
-def get_DT_dict():
-    DT_dict = to_dict(DT_list)
-    return DT_dict
-
-
-def get_DT_header():
-    return DT_header
-
-
-def get_SW_dict():
-    SW_dict = to_dict(SW_list)
-    return SW_dict
-
-
-def get_SW_header():
-    return SW_header
-
-def get_QY_dict():
-    QY_dict = to_dict(QY_list)
-    return QY_dict
-
-
-def get_QY_header():
-    return QY_header
+def get_last_key(datalisttype):
+    if datalisttype == "基本数据":
+        datalist = to_list(ZK_list)
+    if datalisttype == "土层数据":
+        datalist = to_list(TC_list)
+    if datalisttype == "标贯数据":
+        datalist = to_list(BG_list)
+    if datalisttype == "动探数据":
+        datalist = to_list(DT_list)
+    if datalisttype == "水位数据":
+        datalist = to_list(SW_list)
+    if datalisttype == "取样数据":
+        datalist = to_list(QY_list)
+    lastkey = datalist[-1]
+    return lastkey

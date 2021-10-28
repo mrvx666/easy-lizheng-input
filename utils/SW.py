@@ -1,10 +1,9 @@
 # -*- coding: UTF-8 -*-
-from config import get_SW_dict, get_SW_header, SW_DXSLX, SW_DXSWCH, SW_CYF
-from excel import read_rawdata
+from utils.config import get_dict, get_header, SW_DXSLX, SW_DXSWCH, SW_CYF
 
 
-SW_dict = get_SW_dict()
-SW_header_row, SW_header_col = get_SW_header()
+SW_dict = get_dict("水位数据")
+SW_header_row, SW_header_col = get_header("水位数据")
 
 
 def sw_read(sheet):

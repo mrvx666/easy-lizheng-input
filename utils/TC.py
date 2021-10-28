@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-from config import get_TC_dict, get_TC_header
+from utils.config import get_dict, get_header
 
 
-TC_dict = get_TC_dict()
-TC_header_row, TC_header_col = get_TC_header()
+TC_dict = get_dict("土层数据")
+TC_header_row, TC_header_col = get_header("土层数据")
 
 
 def tc_read(sheet):

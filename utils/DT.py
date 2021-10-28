@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-from config import get_DT_dict, get_DT_header, DT_DTLX, DT_CYF
+from utils.config import get_dict, get_header, DT_DTLX, DT_CYF
 
 
-DT_dict = get_DT_dict()
-DT_header_row, DT_header_col = get_DT_header()
+DT_dict = get_dict("动探数据")
+DT_header_row, DT_header_col = get_header("动探数据")
 
 
 def dt_read(sheet):

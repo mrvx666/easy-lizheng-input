@@ -1,10 +1,9 @@
 # -*- coding: UTF-8 -*-
-from config import get_ZK_dict,get_ZK_header
+from utils.config import get_dict, get_header
 
 
-
-ZK_dict = get_ZK_dict()
-ZK_header_row, ZK_header_col = get_ZK_header()
+ZK_dict = get_dict("基本数据")
+ZK_header_row, ZK_header_col = get_header("基本数据")
 
 
 def zk_read(sheet):

@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-from config import get_BG_dict, get_BG_header, BG_TZZ, BG_YZJSCD, BG_CYF
+from utils.config import get_dict, get_header, BG_TZZ, BG_YZJSCD, BG_CYF
 
 
-BG_dict = get_BG_dict()
-BG_header_row, BG_header_col = get_BG_header()
+BG_dict = get_dict("标贯数据")
+BG_header_row, BG_header_col = get_header("标贯数据")
 
 def bg_read(sheet):
     outputarr = []
