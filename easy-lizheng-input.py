@@ -3,7 +3,7 @@
 """
 Author:mrvx666
 Website:https://github.com/mrvx666/easy-lizheng-input
-Info:这是ESI的主窗体，主要的业务都在这里完成。
+Info:这是ESI的主窗体，这个文件主要负责用户界面的输入输出。
 """
 
 from utils.excel import result

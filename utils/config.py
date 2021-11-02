@@ -1,3 +1,8 @@
+"""
+Author:mrvx666
+Website:https://github.com/mrvx666/easy-lizheng-input
+Info:这个文件主要负责一些预设值的设置，还有理正数据表的保存。
+"""
 import re
 
 ZK = "基本数据"

@@ -1,7 +1,13 @@
+"""
+Author:mrvx666
+Website:https://github.com/mrvx666/easy-lizheng-input
+Info:这个文件主要负责操作读写数据。
+"""
+
 import xlrd
 from time import strftime
 import codecs
-from utils.config import get_header, get_last_key
+from utils.config import get_last_key
 from utils.ZK import zk_read
 from utils.TC import tc_read
 from utils.BG import bg_read
