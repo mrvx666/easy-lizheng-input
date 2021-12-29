@@ -65,9 +65,10 @@ def data_output(header, data_dict, endkey, line_feed=True):
 def tc_temp_output(header, zk_name, tc_datalist):
     tc_output = ""
     for tc_temp in tc_datalist:
+        print(tc_temp)
         if tc_temp['钻孔编号'] == zk_name:  # 查找钻孔编号符合的数据
             for tc_temp_dict in tc_temp['土层数据']:  # 提取土层数据
-
+                print(tc_temp_dict)
                 # 如果从excel读取出来是str类型，大概率是空格，判断是否为空
                 if isinstance(tc_temp_dict['层底深度'], str):
                     if str(tc_temp_dict['主层编号']).strip() == "":
@@ -106,12 +107,12 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
             except Exception as e:
                 print("勘探点表写入失败\n" + str(e))
 
-            try:
-                # ---土层数据表写入---
-                out = tc_temp_output("#TC#", zk_name, tc_datalist)
-                file.write(out)
-            except Exception as e:
-                print("土层数据表写入失败\n" + str(e))
+            # try:
+            #     # ---土层数据表写入---
+            #     out = tc_temp_output("#TC#", zk_name, tc_datalist)
+            #     file.write(out)
+            # except Exception as e:
+            #     print("土层数据表写入失败\n" + str(e))
 
             try:
                 # ---标贯数据表写入---

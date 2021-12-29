@@ -6,6 +6,7 @@ Website:https://github.com/mrvx666/easy-lizheng-input
 Info:这是ESI的主窗体，这个文件主要负责用户界面的输入输出。
 """
 
+import os
 from utils.excel import result
 import sys
 from time import sleep
@@ -18,13 +19,26 @@ def get_filename():
     if arglist == 2:
         filename = sys.argv[1]
     elif arglist == 1:
-        filename = input("要转换的文件默认为“理正勘察标准数据接口模板”，按下回车继续\n" +
-                         "如果要转换别的文件，请输入要转换的文件名（忽略.xlsx拓展名）\n" +
-                         "要转换的文件应放在与本程序相同的目录下\n")
-        if filename == "":
-            filename = "理正勘察标准数据接口模板"
-        filename += ".xlsx"
-        print("转换文件名为： " + filename)
+        print("\n")
+        path = os.getcwd()
+        file_arr = []
+        for dirpath, dirnames, files in os.walk(path):
+            for file in files:
+                if file.endswith(".xlsx"):
+                    file_arr.append(file)
+        print("检测到当前目录下存在文件：")
+
+        for index, file in enumerate(file_arr):
+            print(str(index+1) + "." + file)
+
+        filename = ""
+        index = input("请输入需要转换的文件序号，按下回车键继续\n")
+        try:
+            filename = file_arr[int(index) - 1]
+            print("转换文件名为： " + filename)
+        except:
+            print("输入文件序号错误或未输入文件序号，文件序号需为正整数")
+
     elif arglist > 2:
         print('提示：只允许拖入单个文件')
     return filename
@@ -37,7 +51,7 @@ def main():
         return output_file_name
 
     except FileNotFoundError:
-        print(filename + " 文件不存在，请检查文件是否存在当前目录下")
+        print("文件不存在，请检查文件是否存在当前目录下")
 
 
 if __name__ == '__main__':
@@ -57,7 +71,6 @@ if __name__ == '__main__':
     print("*************************************************************")
     sleep(1)
 
-    print("\n")
 
     try:
         output_file_name = main()
@@ -74,5 +87,5 @@ if __name__ == '__main__':
         traceback.print_exc()
         print("*************************************************************")
 
-        input("\n程序运行异常...按下任意键退出")
+        input("程序运行异常...按下任意键退出")
 
