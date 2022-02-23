@@ -4,6 +4,7 @@ Website:https://github.com/mrvx666/easy-lizheng-input
 Info:这个文件主要负责一些预设值的设置，还有理正数据表的保存。
 """
 import re
+from datetime import datetime
 
 ZK = "基本数据"
 ZK_list = "钻孔编号、勘探点类型、X坐标、Y坐标、偏移量、孔口标高、水面标高、勘探深度、探井深度、钻孔直径、勘探开始日期、勘探结束日期"
@@ -53,9 +54,12 @@ QY_header = (1, 1)
 # 取样长度
 QY_QYCD = 0.2
 
+startTime = "2022-2-23"
+endTime = "2022-8-23"
 
-def to_list(datastr):
-    templist = re.split("、", datastr)
+
+def to_list(datastr, index="、"):
+    templist = re.split(index, datastr)
     return templist
 
 
@@ -115,3 +119,10 @@ def get_last_key(datalisttype):
         datalist = to_list(QY_list)
     lastkey = datalist[-1]
     return lastkey
+
+
+def get_time():
+    starttime = datetime.strptime(startTime, '%Y-%m-%d')
+    nowtime = datetime.now()
+    endtime = datetime.strptime(endTime, '%Y-%m-%d')
+    return starttime, nowtime, endtime
