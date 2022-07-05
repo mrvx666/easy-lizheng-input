@@ -13,12 +13,18 @@ def dt_read(sheet):
         temp = DT_dict.copy()  # 拷贝原始字典
 
         # 预设值，来自config.py，如果表格内写入数据，预设数据会被覆盖
-        temp.update({'动探类型': DT_DTLX})
+        temp.update({'动探类型(1-轻型/2-重型/3-超重型)': DT_DTLX})
         temp.update({'参与否': DT_CYF})
 
         for col in range(sheet.ncols)[DT_header_col:]:
             key = sheet.cell_value(rowx=0, colx=col)
-            temp[key] = sheet.cell_value(rowx=row, colx=col)
+
+            # 对标贯动探击数进行取整
+            if key == "动探击数":
+                temp[key] = int(sheet.cell_value(rowx=row, colx=col))
+            else:
+                temp[key] = sheet.cell_value(rowx=row, colx=col)
+
             if str(sheet.cell_value(rowx=row, colx=0)).strip() != "":
                 zk_name = sheet.cell_value(rowx=row, colx=0)
             else:
