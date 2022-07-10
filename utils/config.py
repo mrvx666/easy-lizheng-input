@@ -45,6 +45,13 @@ SW_DXSXZ = 2
 # 水位数据：参与否
 SW_CYF = 1
 
+YR = "岩石采取率"
+YR_list = "深度(m)、岩心采取率（%）、RQD（%）、采取率参与否、RQD参与否、备注"
+YR_header = (1, 1)
+# 岩芯采取率：参与否
+YR_CQL_CYF = 1
+
+
 QY = "取样数据"
 QY_list = "取样编号、取样深度、取样长度、取样类型(0-原状土样，1-扰动土样，2-岩样，3-水样）、质量密度、土粒比重、含水量、液限、塑限、" \
      "最小密度、最大密度、水上休止角、水下休止角、渗透系数、水平渗透系数、垂直渗透系数、单轴抗压强度、自然抗压强度、饱和抗压强度、" \
@@ -83,6 +90,8 @@ def get_header(datalisttype):
         header = DT_header
     if datalisttype == "水位数据":
         header = SW_header
+    if datalisttype == "岩石采取率":
+        header = YR_header
     if datalisttype == "取样数据":
         header = QY_header
     return header
@@ -99,6 +108,8 @@ def get_dict(datalisttype):
         out_dict = to_dict(DT_list)
     if datalisttype == "水位数据":
         out_dict = to_dict(SW_list)
+    if datalisttype == "岩石采取率":
+        out_dict = to_dict(YR_list)
     if datalisttype == "取样数据":
         out_dict = to_dict(QY_list)
     return out_dict
@@ -115,6 +126,8 @@ def get_last_key(datalisttype):
         datalist = to_list(DT_list)
     if datalisttype == "水位数据":
         datalist = to_list(SW_list)
+    if datalisttype == "岩石采取率":
+        datalist = to_list(YR_list)
     if datalisttype == "取样数据":
         datalist = to_list(QY_list)
     lastkey = datalist[-1]

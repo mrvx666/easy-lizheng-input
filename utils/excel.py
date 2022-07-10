@@ -5,7 +5,6 @@ Info:这个文件主要负责操作读写数据。
 """
 
 import xlrd
-from time import strftime
 import codecs
 from utils.config import get_last_key
 from utils.ZK import zk_read
@@ -13,7 +12,14 @@ from utils.TC import tc_read
 from utils.BG import bg_read
 from utils.DT import dt_read
 from utils.SW import sw_read
+from utils.YR import yr_read
 from utils.QY import qy_read
+from time import strftime
+
+
+def timeFileName(filename):
+    time = strftime("%Y-%m-%d-%H-%M-%S")
+    return filename + "接口导出" + str(time) + ".txt"
 
 
 def data_temp_output(zk_name, datalist, endkey):
@@ -33,6 +39,8 @@ def data_temp_output(zk_name, datalist, endkey):
             header = "#DT#"
         if datalisttype == "水位数据":
             header = "#SW#"
+        if datalisttype == "岩石采取率":
+            header = "#YR#"
         if datalisttype == "取样数据":
             header = "#QY#"
         for temp in datalist:
@@ -90,13 +98,9 @@ def tc_temp_output(header, zk_name, tc_datalist):
     return ""
 
 
-def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, qy_datalist, filename):
-
-    time = strftime("%Y-%m-%d-%H-%M-%S")
-    output_file_name = filename + "接口导出" + str(time) + ".txt"
-
+def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, yr_datalist, qy_datalist, out_file_name):
     try:
-        file = codecs.open(str(output_file_name), "w", "gbk")
+        file = codecs.open(str(out_file_name), "w", "gbk")
         for ZK_data in zk_datalist:
             zk_name = ZK_data['钻孔编号']  # 获取钻孔编号
 
@@ -134,12 +138,18 @@ def write_txt(zk_datalist, tc_datalist, bg_datalist, dt_datalist, sw_datalist, q
                 print("水位数据表写入失败\n" + str(e))
 
             try:
+                # --采取率数据表写入---
+                file.write(data_temp_output(zk_name, yr_datalist, get_last_key("岩石采取率")))
+            except Exception as e:
+                print("采取率数据表写入失败\n" + str(e))
+
+            try:
                 # --取样数据表写入---
                 file.write(data_temp_output(zk_name, qy_datalist, get_last_key("取样数据")))
             except Exception as e:
                 print("取样数据表写入失败\n" + str(e))
         file.close()
-        return output_file_name
+        return out_file_name
 
     except Exception as e:
         print("文件写入失败\n" + str(e))
@@ -153,23 +163,26 @@ def read_rawdata(file):
     sheet_BG = workbook.sheet_by_name('标贯数据')
     sheet_DT = workbook.sheet_by_name('动探数据')
     sheet_SW = workbook.sheet_by_name('水位数据')
+    sheet_YR = workbook.sheet_by_name('岩石采取率')
     sheet_QY = workbook.sheet_by_name('取样数据')
     return (sheet_ZK,
             sheet_TC,
             sheet_BG,
             sheet_DT,
             sheet_SW,
+            sheet_YR,
             sheet_QY)
 
 
 def result(filename):
-    zk, tc, bg, dt, sw, qy = read_rawdata(filename)
+    zk, tc, bg, dt, sw, yr, qy = read_rawdata(filename)
     zk_data = zk_read(zk)
     tc_data = tc_read(tc)
     bg_data = bg_read(bg)
     dt_data = dt_read(dt)
     sw_data = sw_read(sw)
+    yr_data = yr_read(yr)
     qy_data = qy_read(qy)
-    output_file_name = write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, qy_data, filename)
+    output_file_name = write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, yr_data, qy_data, timeFileName(filename))
     return output_file_name
 
