@@ -23,11 +23,13 @@ def yr_read(sheet):
             data = sheet.cell_value(rowx=row, colx=col)
 
             if data == "":
-                # 跳过孔号不处理
+                # 跳过空行不处理，常见于RQD列
                 pass
             else:
-                # 对岩心采取率（%）或者RQD（%）进行取整
-                if key == "岩心采取率（%）" or key == "RQD（%）":
+                # 岩石采取率表中除了深度(m)外，岩心采取率（%）、RQD（%）参与否等都应该取整数，进行取整
+                if key == "深度(m)":
+                    pass
+                else:
                     print("data = " + str(data))
                     data = int(float(data))
 
@@ -54,3 +56,4 @@ def yr_random_RQD():
 def yr_random_RQD_read(sheet):
     for row in range(sheet.nrows)[YR_header_row:]:
         pass
+

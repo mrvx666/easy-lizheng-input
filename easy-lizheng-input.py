@@ -112,7 +112,7 @@ def testTimelimit():
 
 
 if __name__ == '__main__':
-    #import traceback
+    import traceback
 
     # 验证系统时间，测试版专用
     if testTimelimit():
@@ -122,7 +122,7 @@ if __name__ == '__main__':
         except Exception:
             print("\n*************************************************************")
             print("错误信息 debug：")
-            #traceback.print_exc()
+            traceback.print_exc()
             print("*************************************************************")
 
             input("\nerror:程序运行异常...按下任意键退出")

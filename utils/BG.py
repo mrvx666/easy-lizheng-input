@@ -5,6 +5,7 @@ from utils.config import get_dict, get_header, BG_TZZ, BG_YZJSCD, BG_CYF
 BG_dict = get_dict("标贯数据")
 BG_header_row, BG_header_col = get_header("标贯数据")
 
+
 def bg_read(sheet):
     outputarr = []
     zk_name = {}
@@ -20,7 +21,7 @@ def bg_read(sheet):
             key = sheet.cell_value(rowx=0, colx=col)
 
             # 对标贯动探击数进行取整
-            if key == "标贯击数":
+            if key == "标贯击数" or key == "参与否":
                 temp[key] = int(sheet.cell_value(rowx=row, colx=col))
             else:
                 temp[key] = sheet.cell_value(rowx=row, colx=col)
@@ -35,3 +36,4 @@ def bg_read(sheet):
 
         outputarr.append(outputdict)
     return outputarr
+
