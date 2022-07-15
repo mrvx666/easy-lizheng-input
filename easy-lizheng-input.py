@@ -25,7 +25,7 @@ def get_filename():
     elif arglist == 1:
         print("\n")
 
-        file_arr = print_file_list()
+        file_arr = get_file_list()
 
         if len(file_arr) == 0:
             print("error:当前目录下不存在模板接口文件（.xlsx），请检查工作目录")
@@ -33,12 +33,12 @@ def get_filename():
         else:
             print("info:检测到当前目录下存在文件：")
 
-            fileindex = get_filename_index(file_arr)
+            fileindex = input("\ninfo:请输入需要转换的文件序号，按下回车键继续\n")
 
             if fileindex.endswith("RQD"):
                 random_rqd = True
-            else:
-                filename = file_arr[int(fileindex) - 1]
+                fileindex = fileindex.replace("RQD", "")
+            filename = file_arr[int(fileindex) - 1]
 
     elif arglist > 2:
         print('error:只允许拖入单个文件')
@@ -50,23 +50,18 @@ def get_filename():
     return filename, random_rqd
 
 
-def print_file_list():
+def get_file_list():
     path = getcwd()
     file_arr = []
     for dirpath, dirnames, files in walk(path):
         for file in files:
             if file.endswith(".xlsx"):
                 file_arr.append(file)
-    return file_arr
 
-
-def get_filename_index(file_arr):
     for index, file in enumerate(file_arr):
         print(str(index + 1) + "." + file)
 
-    index = input("\ninfo:请输入需要转换的文件序号，按下回车键继续\n")
-    print(index)
-    return index
+    return file_arr
 
 
 def main():
@@ -86,13 +81,13 @@ def main():
     sleep(1)
 
     filename, random_rqd = get_filename()
-    print(filename)
 
     if random_rqd:
         print("进入生产随机RQD功能")
+        yr_random_RQD(filename)
+
     else:
-        output_file_name = result(filename)
-        print("info:转换完成，转换后接口文件为：\n" + output_file_name.split("\\")[-1] + "\n")
+        result(filename)
         print('***info：导入到理正勘察前请务必备份理正数据库***\n')
         sleep(0.3)
         print("导入方法：①理正勘察8.5选择 接口→读入理正标准数据接口\n          ②理正勘察9.0选择 接口→读入旧版理正标准数据接口\n")

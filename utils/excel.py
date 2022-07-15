@@ -184,5 +184,6 @@ def result(filename):
     yr_data = yr_read(yr)
     qy_data = qy_read(qy)
     output_file_name = write_txt(zk_data, tc_data, bg_data, dt_data, sw_data, yr_data, qy_data, timeFileName(filename))
-    return output_file_name
+    print("info:转换完成，转换后接口文件为：\n" + output_file_name.split("\\")[-1] + "\n")
+
 

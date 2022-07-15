@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 from utils.config import get_dict, get_header, YR_CQL_CYF
 import random
+import pandas as pd
 
 
 YR_dict = get_dict("岩石采取率")
@@ -30,7 +31,6 @@ def yr_read(sheet):
                 if key == "深度(m)":
                     pass
                 else:
-                    print("data = " + str(data))
                     data = int(float(data))
 
                 temp[key] = data
@@ -48,12 +48,11 @@ def yr_read(sheet):
 
 
 # TODO:按要求生产指定采取率
-def yr_random_RQD():
-    pass
+def yr_random_RQD(excelfilename):
+    df = pd.read_excel(excelfilename, "勘探点地层一览表", index_col=0)
+    print(df)
+
+    #df1 = pd.DataFrame(columns=)
 
 
-# TODO:从模板文件读取生成采取率要求
-def yr_random_RQD_read(sheet):
-    for row in range(sheet.nrows)[YR_header_row:]:
-        pass
 
